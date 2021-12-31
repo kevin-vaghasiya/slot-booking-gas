@@ -1,7 +1,5 @@
 function doGet() {
   const template = HtmlService.createTemplateFromFile("page");
-  // const styles = HtmlService.createTemplateFromFile("styles").getRawContent();
-  template.styles = "";
   const ss = SpreadsheetApp.getActive();
   const calendar_config_sheet = ss.getSheetByName(SHEET_NAMES.CALENDAR_CONFIG);
   template.enabledDays = getEnabledDays(calendar_config_sheet);
@@ -20,21 +18,17 @@ function bookSlot({ date, startTime, endTime, title }) {
     return JSON.stringify({ error: true, message: "missing slot." });
   if (!title) return JSON.stringify({ error: true, message: "missing title." });
 
-  Logger.log({ date, startTime, endTime, title });
-
   const selectedDate = new Date(date);
   const st = new Date(date);
   const et = new Date(date);
   const tempStart = new Date(startTime);
-  const tempEnd = new Date(startTime);
+  const tempEnd = new Date(endTime);
   st.setHours(tempStart.getHours());
   st.setMinutes(tempStart.getMinutes());
   st.setSeconds(tempStart.getSeconds());
   et.setHours(tempEnd.getHours());
   et.setMinutes(tempEnd.getMinutes());
   et.setSeconds(tempEnd.getSeconds());
-
-  Logger.log({ selectedDate, st, et });
 
   const ss = SpreadsheetApp.getActive();
   const calendar_config_sheet = ss.getSheetByName(SHEET_NAMES.CALENDAR_CONFIG);
